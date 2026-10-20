@@ -1,0 +1,12 @@
+body { margin: 0; font-family: system-ui, sans-serif; background: #F7EAE4; color: #1A1A1A; }
+.carte-form { max-width: 420px; margin: 48px auto; padding: 28px; background: #fff; border-radius: 10px; }
+.champ { display: flex; flex-direction: column; gap: 4px; margin-bottom: 16px; }
+input { padding: 10px; border: 1px solid #8A7F7A; border-radius: 6px; font: inherit; }
+input[aria-invalid="true"] { border: 2px solid #C94530; }
+.erreur { margin: 0; color: #A3301E; font-size: .9rem; }
+.erreur::before { content: "⚠ "; }
+.alerte { padding: 10px; background: #FBE3DE; border-left: 4px solid #C94530; }
+.succes { padding: 10px; background: #E1F2E8; border-left: 4px solid #2F7D57; }
+button { padding: 10px 18px; font: inherit; font-weight: 700; background: #1A1A1A; color: #fff; border: 0; border-radius: 6px; cursor: pointer; }
+button:disabled { opacity: .6; }
+:focus-visible { outline: 3px solid #5B4FDC; outline-offset: 2px; }
