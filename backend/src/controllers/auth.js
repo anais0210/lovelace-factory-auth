@@ -3,6 +3,7 @@ import { ErreurHttp } from '../erreurs.js';
 
 const FORMAT_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const LONGUEUR_MIN_MOT_DE_PASSE = 8;
+const DUREE_COOKIE_MS = 2 * 60 * 60 * 1000;   // 2 h, comme le token
 
 // ---------- Validation : la forme des données, avant toute règle métier ----------
 function validerInscription({ prenom, email, motDePasse }) {
@@ -38,4 +39,33 @@ export async function inscription(req, res) {
     motDePasse: body.motDePasse,
   });
   res.status(201).json({ utilisateur });
+}
+
+function validerConnexion({ email, motDePasse }) {
+  const erreurs = {};
+  if (typeof email !== 'string' || email.trim() === '') erreurs.email = "L'email est obligatoire";
+  if (typeof motDePasse !== 'string' || motDePasse === '') erreurs.motDePasse = 'Le mot de passe est obligatoire';
+  return erreurs;
+}
+
+export async function connexion(req, res) {
+  const body = req.body ?? {};
+  const erreurs = validerConnexion(body);
+  if (Object.keys(erreurs).length > 0) {
+    throw new ErreurHttp(422, 'Données invalides', erreurs);
+  }
+
+  const { utilisateur, token } = await authService.connecter({
+    email: normaliserEmail(body.email),
+    motDePasse: body.motDePasse,
+  });
+
+  // Le token voyage dans un cookie httpOnly : le JavaScript du navigateur ne peut pas le lire
+  res.cookie('token', token, {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: DUREE_COOKIE_MS,
+  });
+  res.json({ utilisateur });
 }
