@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import * as authController from '../controllers/auth.js';
 
-// Les routes d'authentification arrivent au chapitre 10
 export const authRouter = Router();
+
+authRouter.post('/inscription', authController.inscription);
