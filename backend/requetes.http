@@ -1,0 +1,25 @@
+### À ouvrir avec l'extension REST Client de VS Code (ou à recopier dans Thunder Client / Postman)
+
+### 1. Inscription : 201
+POST http://localhost:3000/api/auth/inscription
+Content-Type: application/json
+
+{ "prenom": "Inès", "email": "ines@ada.fr", "motDePasse": "motdepasse123" }
+
+### 2. Inscription invalide : 422
+POST http://localhost:3000/api/auth/inscription
+Content-Type: application/json
+
+{ "prenom": "", "email": "pas-un-email", "motDePasse": "court" }
+
+### 3. Connexion : 200 + cookie
+POST http://localhost:3000/api/auth/connexion
+Content-Type: application/json
+
+{ "email": "ines@ada.fr", "motDePasse": "motdepasse123" }
+
+### 4. Qui suis-je ? 200 si le cookie de la requête 3 est envoyé, 401 sinon
+GET http://localhost:3000/api/auth/moi
+
+### 5. Déconnexion : 204
+POST http://localhost:3000/api/auth/deconnexion
