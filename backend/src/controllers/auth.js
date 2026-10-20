@@ -69,3 +69,13 @@ export async function connexion(req, res) {
   });
   res.json({ utilisateur });
 }
+
+export async function deconnexion(req, res) {
+  res.clearCookie('token', { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production' });
+  res.status(204).end();
+}
+
+export async function moi(req, res) {
+  const utilisateur = await authService.profil(req.utilisateur.id);
+  res.json({ utilisateur });
+}

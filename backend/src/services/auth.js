@@ -45,3 +45,11 @@ export async function connecter({ email, motDePasse }) {
   const { mot_de_passe_hash, ...utilisateurPublic } = utilisateur;
   return { utilisateur: utilisateurPublic, token };
 }
+
+export async function profil(id) {
+  const utilisateur = await Utilisateur.trouverParId(id);
+  if (!utilisateur) {
+    throw new ErreurHttp(401, 'Session invalide');
+  }
+  return utilisateur;
+}
